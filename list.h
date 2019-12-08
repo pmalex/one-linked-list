@@ -19,9 +19,10 @@ int list_insert_tail(list_t*const list, const void*const buf, unsigned long size
 int list_insert_head(list_t*const list, const void*const buf, unsigned long size);
 int list_remove_head(list_t*const list);
 int list_remove_tail(list_t*const list);
-int list_peek(const list_node_t*const lnode, void* buf, unsigned long *size);
+unsigned long list_peek(const list_node_t*const lnode, void*const buf);
 unsigned long list_get_count(list_t*const list);
 void list_deinit(list_t*const list);
+int list_empty(const list_t*const list);
 
 static list_node_t* listnode_init(const void*const buf, unsigned long size);
 static void listnode_deinit(list_node_t*const lnode);

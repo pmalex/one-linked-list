@@ -121,15 +121,14 @@ int list_remove_tail(list_t*const list)
     return 0;
 }
 
-int list_peek(const list_node_t*const lnode, void *buf, unsigned long *size)
+unsigned long list_peek(const list_node_t*const lnode, void*const buf)
 {
     if(lnode == NULL)
-        return -1;
+        return 0;
 
     memcpy(buf, lnode->data, lnode->size);
-    *size = lnode->size;
 
-    return 0;
+    return lnode->size;
 }
 
 unsigned long list_get_count(list_t*const list)
@@ -154,4 +153,9 @@ void list_deinit(list_t*const list)
         listnode_deinit(lntmp);
     }
 
+}
+
+int list_empty(const list_t*const list)
+{
+    return (list->head == NULL);
 }
