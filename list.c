@@ -4,7 +4,10 @@
 
 int list_init(list_t*const list)
 {
-    if(list == NULL) return -1;
+    if (list == NULL)
+    {
+        return -1;
+    }
 
     list->head = list->tail = NULL;
 
@@ -13,15 +16,22 @@ int list_init(list_t*const list)
 
 static list_node_t* listnode_init(const void*const buf, const unsigned long size)
 {
-    if(buf == NULL || size == 0) return NULL;
+    if (buf == NULL || size == 0)
+    {
+        return NULL;
+    }
 
     list_node_t *lnode = malloc(sizeof(list_node_t));
-    if(lnode == NULL) return NULL;
+    if (lnode == NULL)
+    {
+        return NULL;
+    }
 
     lnode->next = NULL;
 
     lnode->data = malloc(size);
-    if(lnode->data == NULL){
+    if (lnode->data == NULL)
+    {
         free(lnode);
         return NULL;
     }
@@ -34,10 +44,15 @@ static list_node_t* listnode_init(const void*const buf, const unsigned long size
 
 static void listnode_deinit(list_node_t*const lnode)
 {
-    if(lnode == NULL) return;
+    if (lnode == NULL)
+    {
+        return;
+    }
 
-    if(lnode->data)
+    if (lnode->data)
+    {
         free(lnode->data);
+    }
 
     free(lnode);
 }
@@ -47,15 +62,22 @@ int list_insert_tail(list_t*const list, const void*const buf, const unsigned lon
     list_node_t *newtail;
 
     if(list == NULL || buf == NULL || size == 0)
+    {
         return -1;
+    }
 
     newtail = listnode_init(buf, size);
-    if(newtail == NULL)
+    if (newtail == NULL)
+    {
         return -1;
+    }
 
     if(list->tail == NULL)
+    {
         list->head = list->tail = newtail;
-    else {
+    }
+    else
+    {
         list->tail->next = newtail;
         list->tail = list->tail->next;
     }
@@ -68,15 +90,22 @@ int list_insert_head(list_t*const list, const void*const buf, const unsigned lon
     list_node_t *newhead;
 
     if(list == NULL || buf == NULL || size == 0)
+    {
         return -1;
+    }
 
     newhead = listnode_init(buf, size);
-    if(newhead == NULL)
+    if (newhead == NULL)
+    {
         return -1;
+    }
 
-    if(list->head == NULL)
+    if (list->head == NULL)
+    {
         list->head = list->tail = newhead;
-    else {
+    }
+    else
+    {
         newhead->next = list->head;
         list->head = newhead;
     }
@@ -88,8 +117,10 @@ int list_remove_head(list_t*const list)
 {
     list_node_t *lnode;
 
-    if(list == NULL || list->head == NULL)
+    if (list == NULL || list->head == NULL)
+    {
         return -1;
+    }
 
     lnode = list->head;
     list->head = list->head->next;
@@ -103,16 +134,19 @@ int list_remove_tail(list_t*const list)
 {
     list_node_t *lnode;
 
-    if(list == NULL || list->tail == NULL)
+    if (list == NULL || list->tail == NULL)
+    {
         return -1;
+    }
 
-    if(list->head == list->tail){
+    if (list->head == list->tail)
+    {
         listnode_deinit(list->tail);
         list->head = list->tail = NULL;
         return 0;
     }
 
-    for(lnode=list->head; lnode->next!=list->tail;lnode=lnode->next);
+    for (lnode = list->head; lnode->next != list->tail;lnode = lnode->next);
 
     lnode->next = NULL;
     listnode_deinit(list->tail);
@@ -123,8 +157,10 @@ int list_remove_tail(list_t*const list)
 
 unsigned long list_peek(const list_node_t*const lnode, void*const buf)
 {
-    if(lnode == NULL)
+    if (lnode == NULL)
+    {
         return 0;
+    }
 
     memcpy(buf, lnode->data, lnode->size);
 
@@ -136,7 +172,7 @@ unsigned long list_get_count(list_t*const list)
     list_node_t *lncur;
     unsigned long count;
 
-    for(lncur=list->head,count=0;lncur;lncur=lncur->next,count++);
+    for (lncur = list->head, count = 0;lncur;lncur = lncur->next, count++);
 
     return count;
 }
@@ -145,9 +181,13 @@ void list_deinit(list_t*const list)
 {
     list_node_t *lncur, *lntmp;
 
-    if(list == NULL) return;
+    if (list == NULL)
+    {
+        return;
+    }
 
-    for(lncur = list->head; lncur;){
+    for (lncur = list->head; lncur;)
+    {
         lntmp = lncur;
         lncur = lncur->next;
         listnode_deinit(lntmp);
